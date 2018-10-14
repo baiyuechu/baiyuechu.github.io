@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+
+    <!--[if lt IE 9]>
+        <style>body {display: none; background: none !important} </style>
+        <meta http-equiv="Refresh" Content="0; url=//outdatedbrowser.com/" />
+    <![endif]-->
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="format-detection" content="telephone=no" />
+<meta name="author" content="月初" />
+
+
+
+<meta name="description" content="在GoF的23种设计模式中，单例模式是比较简单的一种。然而，有时候越是简单的东西越容易出现问题。下面就单例设计模式详细的探讨一下。">
+<meta name="keywords" content="java,singleton">
+<meta property="og:type" content="article">
+<meta property="og:title" content="java单例模式">
+<meta property="og:url" content="http://baiyuechu.github.io/2018/10/05/javaSingleton/index.html">
+<meta property="og:site_name" content="月初">
+<meta property="og:description" content="在GoF的23种设计模式中，单例模式是比较简单的一种。然而，有时候越是简单的东西越容易出现问题。下面就单例设计模式详细的探讨一下。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-05-17T00:38:20.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="java单例模式">
+<meta name="twitter:description" content="在GoF的23种设计模式中，单例模式是比较简单的一种。然而，有时候越是简单的东西越容易出现问题。下面就单例设计模式详细的探讨一下。">
+
+<link rel="apple-touch-icon" href= "/apple-touch-icon.png">
+
+
+    <link rel="alternate" href="/atom.xml" title="月初" type="application/atom+xml">
+
+
+
+    <link rel="shortcut icon" href="/img/yuechu.png">
+
+
+
+    <link href="//cdn.bootcss.com/animate.css/3.5.1/animate.min.css" rel="stylesheet">
+
+
+
+    <link href="//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.css" rel="stylesheet">
+
+
+
+    <script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
+    <link href="//cdn.bootcss.com/pace/1.0.2/themes/blue/pace-theme-minimal.css" rel="stylesheet">
+
+
+<link rel="stylesheet" href="/css/style.css">
+
+
+
+<link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+
+
+<title>java单例模式 | 月初</title>
+
+<script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+<script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+
+<script>
+    var yiliaConfig = {
+        fancybox: true,
+        animate: true,
+        isHome: false,
+        isPost: true,
+        isArchive: false,
+        isTag: false,
+        isCategory: false,
+        fancybox_js: "//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.js",
+        scrollreveal: "//cdn.bootcss.com/scrollReveal.js/3.1.4/scrollreveal.min.js",
+        search: undefined
+    }
+</script>
+
+
+    <script> yiliaConfig.jquery_ui = [false]; </script>
+
+
+
+    <script> yiliaConfig.rootUrl = "\/";</script>
+
+
+
+
+
+
+</head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+    <header id="header" class="inner">
+        <a href="/" class="profilepic">
+            <img src="/img/susu3_.png" class="animated zoomIn">
+        </a>
+        <hgroup>
+          <h1 class="header-author"><a href="/">月初</a></h1>
+        </hgroup>
+
+        
+        <p class="header-subtitle">别打我，我知道我很蠢。。。  (联系qq1451595214,注明来意)</p>
+        
+
+        
+
+
+        
+            <div id="switch-btn" class="switch-btn">
+                <div class="icon">
+                    <div class="icon-ctn">
+                        <div class="icon-wrap icon-house" data-idx="0">
+                            <div class="birdhouse"></div>
+                            <div class="birdhouse_holes"></div>
+                        </div>
+                        <div class="icon-wrap icon-ribbon hide" data-idx="1">
+                            <div class="ribbon"></div>
+                        </div>
+                        
+                        <div class="icon-wrap icon-link hide" data-idx="2">
+                            <div class="loopback_l"></div>
+                            <div class="loopback_r"></div>
+                        </div>
+                        
+                        
+                        <div class="icon-wrap icon-me hide" data-idx="3">
+                            <div class="user"></div>
+                            <div class="shoulder"></div>
+                        </div>
+                        
+                    </div>
+                    
+                </div>
+                <div class="tips-box hide">
+                    <div class="tips-arrow"></div>
+                    <ul class="tips-inner">
+                        <li>菜单</li>
+                        <li>标签</li>
+                        
+                        <li>友情链接</li>
+                        
+                        
+                        <li>关于我</li>
+                        
+                    </ul>
+                </div>
+            </div>
+        
+
+        <div id="switch-area" class="switch-area">
+            <div class="switch-wrap">
+                <section class="switch-part switch-part1">
+                    <nav class="header-menu">
+                        <ul>
+                        
+                            <li><a href="/">主页</a></li>
+                        
+                            <li><a href="/archives/">所有文章</a></li>
+                        
+                            <li><a href="/tags/">标签云</a></li>
+                        
+                            <li><a href="/about/">关于我</a></li>
+                        
+                        </ul>
+                    </nav>
+                    <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa Email" href="/752924568@qq.com" title="Email"></a>
+                            
+                                <a class="fa GitHub" href="#" title="GitHub"></a>
+                            
+                                <a class="fa RSS" href="/atom.xml" title="RSS"></a>
+                            
+                                <a class="fa 网易云音乐" href="//music.163.com/style/swf/widget.swf?sid=586029&type=2&auto=1&width=278&height=32" title="网易云音乐"></a>
+                            
+                        </ul>
+                    </nav>
+                </section>
+                
+                
+                <section class="switch-part switch-part2">
+                    <div class="widget tagcloud" id="js-tagcloud">
+                        <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Live/">Live</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Stored-Procedure/">Stored Procedure</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Transaction/">Transaction</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/experience/">experience</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/identity/">identity</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/index/">index</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/live/">live</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/login/">login</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mode/">mode</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/">mysql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/oracle/">oracle</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/paging/">paging</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/self-management/">self management</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/singleton/">singleton</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/struts/">struts</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/study/">study</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/动漫/">动漫</a></li></ul>
+                    </div>
+                </section>
+                
+                
+                
+                <section class="switch-part switch-part3">
+                    <div id="js-friends">
+                    
+                      <a class="main-nav-link switch-friends-link" href="https://hexo.io">Hexo</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="https://pages.github.com/">GitHub</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="http://moxfive.xyz/">MOxFIVE</a>
+                    
+                    </div>
+                </section>
+                
+
+                
+                
+                <section class="switch-part switch-part4">
+                
+                    <div id="js-aboutme">专注于ios</div>
+                </section>
+                
+            </div>
+        </div>
+    </header>                
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+      <div class="overlay">
+          <div class="slider-trigger"></div>
+          <h1 class="header-author js-mobile-header hide"><a href="/" title="回到主页">月初</a></h1>
+      </div>
+    <div class="intrude-less">
+        <header id="header" class="inner">
+            <a href="/" class="profilepic">
+                <img src="/img/susu3_.png" class="animated zoomIn">
+            </a>
+            <hgroup>
+              <h1 class="header-author"><a href="/" title="回到主页">月初</a></h1>
+            </hgroup>
+            
+            <p class="header-subtitle">别打我，我知道我很蠢。。。  (联系qq1451595214,注明来意)</p>
+            
+            <nav class="header-menu">
+                <ul>
+                
+                    <li><a href="/">主页</a></li>
+                
+                    <li><a href="/archives/">所有文章</a></li>
+                
+                    <li><a href="/tags/">标签云</a></li>
+                
+                    <li><a href="/about/">关于我</a></li>
+                
+                <div class="clearfix"></div>
+                </ul>
+            </nav>
+            <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa Email" target="_blank" href="/752924568@qq.com" title="Email"></a>
+                            
+                                <a class="fa GitHub" target="_blank" href="#" title="GitHub"></a>
+                            
+                                <a class="fa RSS" target="_blank" href="/atom.xml" title="RSS"></a>
+                            
+                                <a class="fa 网易云音乐" target="_blank" href="//music.163.com/style/swf/widget.swf?sid=586029&type=2&auto=1&width=278&height=32" title="网易云音乐"></a>
+                            
+                        </ul>
+            </nav>
+        </header>                
+    </div>
+    <link class="menu-list" tags="标签" friends="友情链接" about="关于我"/>
+</nav>
+      <div class="body-wrap"><article id="post-javaSingleton" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2018/10/05/javaSingleton/" class="article-date">
+      <time datetime="2018-10-05T14:06:13.363Z" itemprop="datePublished">2018-10-05</time>
+</a>
+
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      java单例模式
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+    <div class="article-category tagcloud">
+    <a class="article-category-link" href="/categories/java/">java</a>
+    </div>
+
+
+        
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/">java</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/singleton/">singleton</a></li></ul>
+    </div>
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <p>在GoF的23种设计模式中，单例模式是比较简单的一种。然而，有时候越是简单的东西越容易出现问题。下面就单例设计模式详细的探讨一下。<a id="more"></a></p>
+<p><a href="http://devbean.blog.51cto.com/448512/203501/" target="_blank" rel="noopener">原文链接</a><br>所谓单例模式，简单来说，就是在整个应用中保证只有一个类的实例存在。就像是Java Web中的application，也就是提供了一个全局变量，用处相当广泛，比如保存全局数据，实现全局性的操作等。</p>
+<h3 id="最简单的实现"><a href="#最简单的实现" class="headerlink" title="最简单的实现"></a>最简单的实现</h3><p>首先，能够想到的最简单的实现是，把类的构造函数写成private的，从而保证别的类不能实例化此类，然后在类中提供一个静态的实例并能够返回给使用者。这样，使用者就可以通过这个引用使用到这个类的实例了。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">public class SingletonClass &#123; </span><br><span class="line"></span><br><span class="line">  private static final SingletonClass instance = new SingletonClass(); </span><br><span class="line">    </span><br><span class="line">  public static SingletonClass getInstance() &#123; </span><br><span class="line">    return instance; </span><br><span class="line">  &#125; </span><br><span class="line">    </span><br><span class="line">  private SingletonClass() &#123; </span><br><span class="line">     </span><br><span class="line">  &#125; </span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>如上例，外部使用者如果需要使用SingletonClass的实例，只能通过getInstance()方法，并且它的构造方法是private的，这样就保证了只能有一个对象存在。</p>
+<h3 id="性能优化——lazy-loaded"><a href="#性能优化——lazy-loaded" class="headerlink" title="性能优化——lazy loaded"></a>性能优化——lazy loaded</h3><p>上面的代码虽然简单，但是有一个问题——无论这个类是否被使用，都会创建一个instance对象。如果这个创建过程很耗时，比如需要连接10000次数据库(夸张了…:-))，并且这个类还并不一定会被使用，那么这个创建过程就是无用的。怎么办呢？</p>
+<p>为了解决这个问题，我们想到了新的解决方案：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">public class SingletonClass &#123; </span><br><span class="line"></span><br><span class="line">  private static SingletonClass instance = null; </span><br><span class="line">    </span><br><span class="line">  public static SingletonClass getInstance() &#123; </span><br><span class="line">    if(instance == null) &#123; </span><br><span class="line">      instance = new SingletonClass(); </span><br><span class="line">    &#125; </span><br><span class="line">    return instance; </span><br><span class="line">  &#125; </span><br><span class="line">    </span><br><span class="line">  private SingletonClass() &#123; </span><br><span class="line">     </span><br><span class="line">  &#125; </span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>代码的变化有两处——首先，把instance初始化为null，直到第一次使用的时候通过判断是否为null来创建对象。因为创建过程不在声明处，所以那个final的修饰必须去掉。</p>
+<p>我们来想象一下这个过程。要使用SingletonClass，调用getInstance()方法。第一次的时候发现instance是null，然后就新建一个对象，返回出去；第二次再使用的时候，因为这个instance是static的，所以已经不是null了，因此不会再创建对象，直接将其返回。</p>
+<p>这个过程就成为lazy loaded，也就是迟加载——直到使用的时候才进行加载。</p>
+<h3 id="同步"><a href="#同步" class="headerlink" title="同步"></a>同步</h3><p>上面的代码很清楚，也很简单。然而就像那句名言：“80%的错误都是由20%代码优化引起的”。单线程下，这段代码没有什么问题，可是如果是多线程，麻烦就来了。我们来分析一下：</p>
+<p>线程A希望使用SingletonClass，调用getInstance()方法。因为是第一次调用，A就发现instance是null的，于是它开始创建实例，就在这个时候，CPU发生时间片切换，线程B开始执行，它要使用SingletonClass，调用getInstance()方法，同样检测到instance是null——注意，这是在A检测完之后切换的，也就是说A并没有来得及创建对象——因此B开始创建。B创建完成后，切换到A继续执行，因为它已经检测完了，所以A不会再检测一遍，它会直接创建对象。这样，线程A和B各自拥有一个SingletonClass的对象——单例失败！</p>
+<p>解决的方法也很简单，那就是加锁：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">public class SingletonClass &#123; </span><br><span class="line"></span><br><span class="line">  private static SingletonClass instance = null; </span><br><span class="line">    </span><br><span class="line">  public synchronized static SingletonClass getInstance() &#123; </span><br><span class="line">    if(instance == null) &#123; </span><br><span class="line">      instance = new SingletonClass(); </span><br><span class="line">    &#125; </span><br><span class="line">    return instance; </span><br><span class="line">  &#125; </span><br><span class="line">    </span><br><span class="line">  private SingletonClass() &#123; </span><br><span class="line">     </span><br><span class="line">  &#125; </span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>是要getInstance()加上同步锁，一个线程必须等待另外一个线程创建完成后才能使用这个方法，这就保证了单例的唯一性。</p>
+<h3 id="又是性能"><a href="#又是性能" class="headerlink" title="又是性能"></a>又是性能</h3><p>上面的代码又是很清楚很简单的，然而，简单的东西往往不够理想。这段代码毫无疑问存在性能的问题——synchronized修饰的同步块可是要比一般的代码段慢上几倍的！如果存在很多次getInstance()的调用，那性能问题就不得不考虑了！</p>
+<p>让我们来分析一下，究竟是整个方法都必须加锁，还是仅仅其中某一句加锁就足够了？我们为什么要加锁呢？分析一下出现lazy loaded的那种情形的原因。原因就是检测null的操作和创建对象的操作分离了。如果这两个操作能够原子地进行，那么单例就已经保证了。于是，我们开始修改代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">public class SingletonClass &#123; </span><br><span class="line"></span><br><span class="line">  private static SingletonClass instance = null; </span><br><span class="line">    </span><br><span class="line">  public static SingletonClass getInstance() &#123; </span><br><span class="line">    synchronized (SingletonClass.class) &#123; </span><br><span class="line">      if(instance == null) &#123; </span><br><span class="line">        instance = new SingletonClass(); </span><br><span class="line">      &#125; </span><br><span class="line">    &#125;     </span><br><span class="line">    return instance; </span><br><span class="line">  &#125; </span><br><span class="line">    </span><br><span class="line">  private SingletonClass() &#123; </span><br><span class="line">     </span><br><span class="line">  &#125; </span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>首先去掉getInstance()的同步操作，然后把同步锁加载if语句上。但是这样的修改起不到任何作用：因为每次调用getInstance()的时候必然要同步，性能问题还是存在。如果……如果我们事先判断一下是不是为null再去同步呢？<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">public class SingletonClass &#123; </span><br><span class="line"></span><br><span class="line">  private static SingletonClass instance = null; </span><br><span class="line"></span><br><span class="line">  public static SingletonClass getInstance() &#123; </span><br><span class="line">    if (instance == null) &#123; </span><br><span class="line">      synchronized (SingletonClass.class) &#123; </span><br><span class="line">        if (instance == null) &#123; </span><br><span class="line">          instance = new SingletonClass(); </span><br><span class="line">        &#125; </span><br><span class="line">      &#125; </span><br><span class="line">    &#125; </span><br><span class="line">    return instance; </span><br><span class="line">  &#125; </span><br><span class="line"></span><br><span class="line">  private SingletonClass() &#123; </span><br><span class="line"></span><br><span class="line">  &#125; </span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>还有问题吗？首先判断instance是不是为null，如果为null，加锁初始化；如果不为null，直接返回instance。</p>
+<p>这就是double-checked locking设计实现单例模式。到此为止，一切都很完美。我们用一种很聪明的方式实现了单例模式。</p>
+<h3 id="从源头检查"><a href="#从源头检查" class="headerlink" title="从源头检查"></a>从源头检查</h3><p>下面我们开始说编译原理。所谓编译，就是把源代码“翻译”成目标代码——大多数是指机器代码——的过程。针对Java，它的目标代码不是本地机器代码，而是虚拟机代码。编译原理里面有一个很重要的内容是编译器优化。所谓编译器优化是指，在不改变原来语义的情况下，通过调整语句顺序，来让程序运行的更快。这个过程成为reorder。</p>
+<p>要知道，JVM只是一个标准，并不是实现。JVM中并没有规定有关编译器优化的内容，也就是说，JVM实现可以自由的进行编译器优化。</p>
+<p>下面来想一下，创建一个变量需要哪些步骤呢？一个是申请一块内存，调用构造方法进行初始化操作，另一个是分配一个指针指向这块内存。这两个操作谁在前谁在后呢？JVM规范并没有规定。那么就存在这么一种情况，JVM是先开辟出一块内存，然后把指针指向这块内存，最后调用构造方法进行初始化。</p>
+<p>下面我们来考虑这么一种情况：线程A开始创建SingletonClass的实例，此时线程B调用了getInstance()方法，首先判断instance是否为null。按照我们上面所说的内存模型，A已经把instance指向了那块内存，只是还没有调用构造方法，因此B检测到instance不为null，于是直接把instance返回了——问题出现了，尽管instance不为null，但它并没有构造完成，就像一套房子已经给了你钥匙，但你并不能住进去，因为里面还没有收拾。此时，如果B在A将instance构造完成之前就是用了这个实例，程序就会出现错误了！</p>
+<p>于是，我们想到了下面的代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">public class SingletonClass &#123; </span><br><span class="line"></span><br><span class="line">  private static SingletonClass instance = null; </span><br><span class="line"></span><br><span class="line">  public static SingletonClass getInstance() &#123; </span><br><span class="line">    if (instance == null) &#123; </span><br><span class="line">      SingletonClass sc; </span><br><span class="line">      synchronized (SingletonClass.class) &#123; </span><br><span class="line">        sc = instance; </span><br><span class="line">        if (sc == null) &#123; </span><br><span class="line">          synchronized (SingletonClass.class) &#123; </span><br><span class="line">            if(sc == null) &#123; </span><br><span class="line">              sc = new SingletonClass(); </span><br><span class="line">            &#125; </span><br><span class="line">          &#125; </span><br><span class="line">          instance = sc; </span><br><span class="line">        &#125; </span><br><span class="line">      &#125; </span><br><span class="line">    &#125; </span><br><span class="line">    return instance; </span><br><span class="line">  &#125; </span><br><span class="line"></span><br><span class="line">  private SingletonClass() &#123; </span><br><span class="line"></span><br><span class="line">  &#125; </span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>我们在第一个同步块里面创建一个临时变量，然后使用这个临时变量进行对象的创建，并且在最后把instance指针临时变量的内存空间。写出这种代码基于以下思想，即synchronized会起到一个代码屏蔽的作用，同步块里面的代码和外部的代码没有联系。因此，在外部的同步块里面对临时变量sc进行操作并不影响instance，所以外部类在instance=sc;之前检测instance的时候，结果instance依然是null。</p>
+<p>不过，这种想法完全是错误的！同步块的释放保证在此之前——也就是同步块里面——的操作必须完成，但是并不保证同步块之后的操作不能因编译器优化而调换到同步块结束之前进行。因此，编译器完全可以把instance=sc;这句移到内部同步块里面执行。这样，程序又是错误的了！</p>
+<h3 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h3><p>说了这么多，难道单例没有办法在Java中实现吗？其实不然！</p>
+<p>在JDK 5之后，Java使用了新的内存模型。volatile关键字有了明确的语义——在JDK1.5之前，volatile是个关键字，但是并没有明确的规定其用途——被volatile修饰的写变量不能和之前的读写代码调整，读变量不能和之后的读写代码调整！因此，只要我们简单的把instance加上volatile关键字就可以了。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">public class SingletonClass &#123; </span><br><span class="line"></span><br><span class="line">  private volatile static SingletonClass instance = null; </span><br><span class="line"></span><br><span class="line">  public static SingletonClass getInstance() &#123; </span><br><span class="line">    if (instance == null) &#123; </span><br><span class="line">      synchronized (SingletonClass.class) &#123; </span><br><span class="line">        if(instance == null) &#123; </span><br><span class="line">          instance = new SingletonClass(); </span><br><span class="line">        &#125; </span><br><span class="line">      &#125; </span><br><span class="line">    &#125; </span><br><span class="line">    return instance; </span><br><span class="line">  &#125; </span><br><span class="line"></span><br><span class="line">  private SingletonClass() &#123; </span><br><span class="line"></span><br><span class="line">  &#125; </span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>然而，这只是JDK1.5之后的Java的解决方案，那之前版本呢？其实，还有另外的一种解决方案，并不会受到Java版本的影响：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">public class SingletonClass &#123; </span><br><span class="line">    </span><br><span class="line">  private static class SingletonClassInstance &#123; </span><br><span class="line">    private static final SingletonClass instance = new SingletonClass(); </span><br><span class="line">  &#125; </span><br><span class="line"></span><br><span class="line">  public static SingletonClass getInstance() &#123; </span><br><span class="line">    return SingletonClassInstance.instance; </span><br><span class="line">  &#125; </span><br><span class="line"></span><br><span class="line">  private SingletonClass() &#123; </span><br><span class="line"></span><br><span class="line">  &#125; </span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>在这一版本的单例模式实现代码中，我们使用了Java的静态内部类。这一技术是被JVM明确说明了的，因此不存在任何二义性。在这段代码中，因为SingletonClass没有static的属性，因此并不会被初始化。直到调用getInstance()的时候，会首先加载SingletonClassInstance类，这个类有一个static的SingletonClass实例，因此需要调用SingletonClass的构造方法，然后getInstance()将把这个内部类的instance返回给使用者。由于这个instance是static的，因此并不会构造多次。</p>
+<p>由于SingletonClassInstance是私有静态内部类，所以不会被其他类知道，同样，static语义也要求不会有多个实例存在。并且，JSL规范定义，类的构造必须是原子性的，非并发的，因此不需要加同步块。同样，由于这个构造是并发的，所以getInstance()也并不需要加同步。</p>
+<p>至此，我们完整的了解了单例模式在Java语言中的时候，提出了两种解决方案。个人偏向于第二种，并且Effiective Java也推荐的这种方式。</p>
+<p>另：介绍一种用枚举实现的单例，枚举用的人不多，可能是因为他的扩展性不够好，但是这种方式可以防止利用反射来破坏单例</p>
+<p>枚举<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">public enum Singleton &#123;  </span><br><span class="line">    INSTANCE;  </span><br><span class="line">    public void whateverMethod() &#123;  </span><br><span class="line">    &#125;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>这种方式是Effective Java作者Josh Bloch 提倡的方式，它不仅能避免多线程同步问题，而且还能防止反序列化重新创建新的对象，可谓是很坚强的壁垒啊，不过，个人认为由于1.5中才加入enum特性，用这种方式写不免让人感觉生疏，在实际工作中，我也很少看见有人这么写过。</p>
+
+      
+    </div>
+    
+  </div>
+  
+    
+    <div class="copyright">
+        <p><span>本文标题:</span><a href="/2018/10/05/javaSingleton/">java单例模式</a></p>
+        <p><span>文章作者:</span><a href="/" title="回到主页">月初</a></p>
+        <p><span>发布时间:</span>2018-10-05, 22:06:13</p>
+        <p><span>最后更新:</span>2017-05-17, 08:38:20</p>
+        <p>
+            <span>原始链接:</span><a class="post-url" href="/2018/10/05/javaSingleton/" title="java单例模式">http://baiyuechu.github.io/2018/10/05/javaSingleton/</a>
+            <span class="copy-path" data-clipboard-text="原文: http://baiyuechu.github.io/2018/10/05/javaSingleton/　　作者: 月初" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <script> var clipboard = new Clipboard('.copy-path'); </script>
+        </p>
+        <p>
+            <span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" title="CC BY-NC-SA 4.0 International" target = "_blank">"署名-非商用-相同方式共享 4.0"</a> 转载请保留原文链接及作者。
+        </p>
+    </div>
+
+
+
+    <nav id="article-nav">
+        
+            <div id="article-nav-newer" class="article-nav-title">
+                <a href="/2018/10/05/linuxMysql/">
+                    linux安装mysql5.6.39
+                </a>
+            </div>
+        
+        
+            <div id="article-nav-older" class="article-nav-title">
+                <a href="/2018/10/05/javaMode/">
+                    java适配器模式，装饰器模式，代理模式比较
+                </a>
+            </div>
+        
+    </nav>
+
+  
+</article>
+
+    <div id="toc" class="toc-article">
+        <strong class="toc-title">文章目录</strong>
+        
+            <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#最简单的实现"><span class="toc-number">1.</span> <span class="toc-text">最简单的实现</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#性能优化——lazy-loaded"><span class="toc-number">2.</span> <span class="toc-text">性能优化——lazy loaded</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#同步"><span class="toc-number">3.</span> <span class="toc-text">同步</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#又是性能"><span class="toc-number">4.</span> <span class="toc-text">又是性能</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#从源头检查"><span class="toc-number">5.</span> <span class="toc-text">从源头检查</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#解决方案"><span class="toc-number">6.</span> <span class="toc-text">解决方案</span></a></li></ol>
+        
+    </div>
+    <style>
+        .left-col .switch-btn,
+        .left-col .switch-area {
+            display: none;
+        }
+        .toc-level-3 i,
+        .toc-level-3 ol {
+            display: none !important;
+        }
+    </style>
+
+    <input type="button" id="tocButton" value="隐藏目录"  title="点击按钮隐藏或者显示文章目录">
+
+    <script>
+        yiliaConfig.toc = ["隐藏目录", "显示目录", !!"false"];
+    </script>
+
+
+
+    
+<div class="share">
+    
+        <div class="bdsharebuttonbox">
+            <a href="#" class="fa fa-twitter bds_twi" data-cmd="twi" title="分享到推特"></a>
+            <a href="#" class="fa fa-weibo bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+            <a href="#" class="fa fa-qq bds_sqq" data-cmd="sqq" title="分享给 QQ 好友"></a>
+            <a href="#" class="fa fa-files-o bds_copy" data-cmd="copy" title="复制网址"></a>
+            <a href="#" class="fa fa fa-envelope-o bds_mail" data-cmd="mail" title="通过邮件分享"></a>
+            <a href="#" class="fa fa-weixin bds_weixin" data-cmd="weixin" title="生成文章二维码"></a>
+            <a href="#" class="fa fa-share-alt bds_more" data-cmd="more"></i></a>
+        </div>
+        <script>
+            window._bd_share_config={
+                "common":{"bdSnsKey":{},"bdText":"java单例模式　| 月初　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+        </script>
+    
+
+    
+</div>
+
+
+
+
+
+
+
+    
+
+
+
+
+    <div class="scroll" id="post-nav-button">
+        
+            <a href="/2018/10/05/linuxMysql/" title="上一篇: linux安装mysql5.6.39">
+                <i class="fa fa-angle-left"></i>
+            </a>
+        
+
+        <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+
+        
+            <a href="/2018/10/05/javaMode/" title="下一篇: java适配器模式，装饰器模式，代理模式比较">
+                <i class="fa fa-angle-right"></i>
+            </a>
+        
+    </div>
+
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2018/10/14/狼的孩子雨和雪/">狼的孩子雨和雪</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/10/05/刺客伍六七/">刺客伍六七</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/10/05/time Manage/">时间管理</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/10/05/study/">学习方法</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/10/05/oracle Stored Procedure/">oracle存储过程</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/10/05/oracle Paging/">oracle分页</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/10/05/oracle Index/">oracle索引</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/10/05/linuxMysql/">linux安装mysql5.6.39</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/10/05/javaSingleton/">java单例模式</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/10/05/javaMode/">java适配器模式，装饰器模式，代理模式比较</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/10/05/javaLogin/">java登录相关</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/10/05/javaIdentity/">java验证码</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/10/05/bulidSummary/">建站小结</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/10/05/birthday/">建站第一天纪念</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/10/05/2/">驱动模式 ModelDriven</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/10/05/1/">声明式事务管理</a></li></ul>
+
+
+
+
+    <script>
+        
+    </script>
+</div>
+      <footer id="footer">
+    <div class="outer">
+        <div id="footer-info">
+            <div class="footer-left">
+                <i class="fa fa-copyright"></i> 
+                2016-2018 月初
+            </div>
+            <div class="footer-right">
+                <a href="http://hexo.io/" target="_blank" title="快速、简洁且高效的博客框架">Hexo</a>  Theme <a href="https://github.com/MOxFIVE/hexo-theme-yelee" target="_blank" title="简而不减 Hexo 双栏博客主题  v3.5">Yelee</a> by MOxFIVE <i class="fa fa-heart animated infinite pulse"></i>
+            </div>
+        </div>
+        
+            <div class="visit">
+                
+                    <span id="busuanzi_container_site_pv" style='display:none'>
+                        <span id="site-visit" title="本站到访数"><i class="fa fa-user" aria-hidden="true"></i><span id="busuanzi_value_site_uv"></span>
+                        </span>
+                    </span>
+                
+                
+                    <span>| </span>
+                
+                
+                    <span id="busuanzi_container_page_pv" style='display:none'>
+                        <span id="page-visit"  title="本页阅读量"><i class="fa fa-eye animated infinite pulse" aria-hidden="true"></i><span id="busuanzi_value_page_pv"></span>
+                        </span>
+                    </span>
+                
+            </div>
+        
+    </div>
+</footer>
+    </div>
+    
+<script data-main="/js/main.js" src="//cdn.bootcss.com/require.js/2.2.0/require.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            var iPad = window.navigator.userAgent.indexOf('iPad');
+            if (iPad > -1 || $(".left-col").css("display") === "none") {
+                var bgColorList = ["#9db3f4", "#414141", "#e5a859", "#f5dfc6", "#c084a0", "#847e72", "#cd8390", "#996731"];
+                var bgColor = Math.ceil(Math.random() * (bgColorList.length - 1));
+                $("body").css({"background-color": bgColorList[bgColor], "background-size": "cover"});
+            }
+            else {
+                var backgroundnum = 5;
+                var backgroundimg = "url(/background/bg-x.jpg)".replace(/x/gi, Math.ceil(Math.random() * backgroundnum));
+                $("body").css({"background": backgroundimg, "background-attachment": "fixed", "background-size": "cover"});
+            }
+        })
+    </script>
+
+
+
+
+
+<div class="scroll" id="scroll">
+    <a href="#" title="返回顶部"><i class="fa fa-arrow-up"></i></a>
+    <a href="#comments" onclick="load$hide();" title="查看评论"><i class="fa fa-comments-o"></i></a>
+    <a href="#footer" title="转到底部"><i class="fa fa-arrow-down"></i></a>
+</div>
+<script>
+    // Open in New Window
+    
+        var oOpenInNew = {
+            
+            
+            
+            
+            
+            
+             archives: ".archive-article-title", 
+             miniArchives: "a.post-list-link", 
+            
+             friends: "#js-friends a", 
+             socail: ".social a" 
+        }
+        for (var x in oOpenInNew) {
+            $(oOpenInNew[x]).attr("target", "_blank");
+        }
+    
+</script>
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+  </div>
+</body>
+</html>

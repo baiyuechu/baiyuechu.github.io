@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+
+    <!--[if lt IE 9]>
+        <style>body {display: none; background: none !important} </style>
+        <meta http-equiv="Refresh" Content="0; url=//outdatedbrowser.com/" />
+    <![endif]-->
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="format-detection" content="telephone=no" />
+<meta name="author" content="月初" />
+
+
+
+<meta name="description" content="转载一篇关于检验用户是否登录及自动登录的博客">
+<meta name="keywords" content="java,login">
+<meta property="og:type" content="article">
+<meta property="og:title" content="java登录相关">
+<meta property="og:url" content="http://baiyuechu.github.io/2018/10/05/javaLogin/index.html">
+<meta property="og:site_name" content="月初">
+<meta property="og:description" content="转载一篇关于检验用户是否登录及自动登录的博客">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-05-17T00:44:14.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="java登录相关">
+<meta name="twitter:description" content="转载一篇关于检验用户是否登录及自动登录的博客">
+
+<link rel="apple-touch-icon" href= "/apple-touch-icon.png">
+
+
+    <link rel="alternate" href="/atom.xml" title="月初" type="application/atom+xml">
+
+
+
+    <link rel="shortcut icon" href="/img/yuechu.png">
+
+
+
+    <link href="//cdn.bootcss.com/animate.css/3.5.1/animate.min.css" rel="stylesheet">
+
+
+
+    <link href="//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.css" rel="stylesheet">
+
+
+
+    <script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
+    <link href="//cdn.bootcss.com/pace/1.0.2/themes/blue/pace-theme-minimal.css" rel="stylesheet">
+
+
+<link rel="stylesheet" href="/css/style.css">
+
+
+
+<link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+
+
+<title>java登录相关 | 月初</title>
+
+<script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+<script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+
+<script>
+    var yiliaConfig = {
+        fancybox: true,
+        animate: true,
+        isHome: false,
+        isPost: true,
+        isArchive: false,
+        isTag: false,
+        isCategory: false,
+        fancybox_js: "//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.js",
+        scrollreveal: "//cdn.bootcss.com/scrollReveal.js/3.1.4/scrollreveal.min.js",
+        search: undefined
+    }
+</script>
+
+
+    <script> yiliaConfig.jquery_ui = [false]; </script>
+
+
+
+    <script> yiliaConfig.rootUrl = "\/";</script>
+
+
+
+
+
+
+</head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+    <header id="header" class="inner">
+        <a href="/" class="profilepic">
+            <img src="/img/susu3_.png" class="animated zoomIn">
+        </a>
+        <hgroup>
+          <h1 class="header-author"><a href="/">月初</a></h1>
+        </hgroup>
+
+        
+        <p class="header-subtitle">别打我，我知道我很蠢。。。  (联系qq1451595214,注明来意)</p>
+        
+
+        
+
+
+        
+            <div id="switch-btn" class="switch-btn">
+                <div class="icon">
+                    <div class="icon-ctn">
+                        <div class="icon-wrap icon-house" data-idx="0">
+                            <div class="birdhouse"></div>
+                            <div class="birdhouse_holes"></div>
+                        </div>
+                        <div class="icon-wrap icon-ribbon hide" data-idx="1">
+                            <div class="ribbon"></div>
+                        </div>
+                        
+                        <div class="icon-wrap icon-link hide" data-idx="2">
+                            <div class="loopback_l"></div>
+                            <div class="loopback_r"></div>
+                        </div>
+                        
+                        
+                        <div class="icon-wrap icon-me hide" data-idx="3">
+                            <div class="user"></div>
+                            <div class="shoulder"></div>
+                        </div>
+                        
+                    </div>
+                    
+                </div>
+                <div class="tips-box hide">
+                    <div class="tips-arrow"></div>
+                    <ul class="tips-inner">
+                        <li>菜单</li>
+                        <li>标签</li>
+                        
+                        <li>友情链接</li>
+                        
+                        
+                        <li>关于我</li>
+                        
+                    </ul>
+                </div>
+            </div>
+        
+
+        <div id="switch-area" class="switch-area">
+            <div class="switch-wrap">
+                <section class="switch-part switch-part1">
+                    <nav class="header-menu">
+                        <ul>
+                        
+                            <li><a href="/">主页</a></li>
+                        
+                            <li><a href="/archives/">所有文章</a></li>
+                        
+                            <li><a href="/tags/">标签云</a></li>
+                        
+                            <li><a href="/about/">关于我</a></li>
+                        
+                        </ul>
+                    </nav>
+                    <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa Email" href="/752924568@qq.com" title="Email"></a>
+                            
+                                <a class="fa GitHub" href="#" title="GitHub"></a>
+                            
+                                <a class="fa RSS" href="/atom.xml" title="RSS"></a>
+                            
+                                <a class="fa 网易云音乐" href="//music.163.com/style/swf/widget.swf?sid=586029&type=2&auto=1&width=278&height=32" title="网易云音乐"></a>
+                            
+                        </ul>
+                    </nav>
+                </section>
+                
+                
+                <section class="switch-part switch-part2">
+                    <div class="widget tagcloud" id="js-tagcloud">
+                        <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Live/">Live</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Stored-Procedure/">Stored Procedure</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Transaction/">Transaction</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/experience/">experience</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/identity/">identity</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/index/">index</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/live/">live</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/login/">login</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mode/">mode</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/">mysql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/oracle/">oracle</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/paging/">paging</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/self-management/">self management</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/singleton/">singleton</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/struts/">struts</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/study/">study</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/动漫/">动漫</a></li></ul>
+                    </div>
+                </section>
+                
+                
+                
+                <section class="switch-part switch-part3">
+                    <div id="js-friends">
+                    
+                      <a class="main-nav-link switch-friends-link" href="https://hexo.io">Hexo</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="https://pages.github.com/">GitHub</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="http://moxfive.xyz/">MOxFIVE</a>
+                    
+                    </div>
+                </section>
+                
+
+                
+                
+                <section class="switch-part switch-part4">
+                
+                    <div id="js-aboutme">专注于ios</div>
+                </section>
+                
+            </div>
+        </div>
+    </header>                
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+      <div class="overlay">
+          <div class="slider-trigger"></div>
+          <h1 class="header-author js-mobile-header hide"><a href="/" title="回到主页">月初</a></h1>
+      </div>
+    <div class="intrude-less">
+        <header id="header" class="inner">
+            <a href="/" class="profilepic">
+                <img src="/img/susu3_.png" class="animated zoomIn">
+            </a>
+            <hgroup>
+              <h1 class="header-author"><a href="/" title="回到主页">月初</a></h1>
+            </hgroup>
+            
+            <p class="header-subtitle">别打我，我知道我很蠢。。。  (联系qq1451595214,注明来意)</p>
+            
+            <nav class="header-menu">
+                <ul>
+                
+                    <li><a href="/">主页</a></li>
+                
+                    <li><a href="/archives/">所有文章</a></li>
+                
+                    <li><a href="/tags/">标签云</a></li>
+                
+                    <li><a href="/about/">关于我</a></li>
+                
+                <div class="clearfix"></div>
+                </ul>
+            </nav>
+            <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa Email" target="_blank" href="/752924568@qq.com" title="Email"></a>
+                            
+                                <a class="fa GitHub" target="_blank" href="#" title="GitHub"></a>
+                            
+                                <a class="fa RSS" target="_blank" href="/atom.xml" title="RSS"></a>
+                            
+                                <a class="fa 网易云音乐" target="_blank" href="//music.163.com/style/swf/widget.swf?sid=586029&type=2&auto=1&width=278&height=32" title="网易云音乐"></a>
+                            
+                        </ul>
+            </nav>
+        </header>                
+    </div>
+    <link class="menu-list" tags="标签" friends="友情链接" about="关于我"/>
+</nav>
+      <div class="body-wrap"><article id="post-javaLogin" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2018/10/05/javaLogin/" class="article-date">
+      <time datetime="2018-10-05T14:06:13.347Z" itemprop="datePublished">2018-10-05</time>
+</a>
+
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      java登录相关
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+    <div class="article-category tagcloud">
+    <a class="article-category-link" href="/categories/java/">java</a>
+    </div>
+
+
+        
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/">java</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/login/">login</a></li></ul>
+    </div>
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <p>转载一篇关于检验用户是否登录及自动登录的博客<a id="more"></a></p>
+<h3 id="验证用户是否已经登录"><a href="#验证用户是否已经登录" class="headerlink" title="验证用户是否已经登录"></a>验证用户是否已经登录</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br></pre></td><td class="code"><pre><span class="line">package cn.hongxin.filter;</span><br><span class="line">import java.io.IOException;</span><br><span class="line">import javax.servlet.Filter;</span><br><span class="line">import javax.servlet.FilterChain;</span><br><span class="line">import javax.servlet.FilterConfig;</span><br><span class="line">import javax.servlet.ServletException;</span><br><span class="line">import javax.servlet.ServletRequest;</span><br><span class="line">import javax.servlet.ServletResponse;</span><br><span class="line">import javax.servlet.http.HttpServletRequest;</span><br><span class="line">import javax.servlet.http.HttpServletResponse;</span><br><span class="line">import javax.servlet.http.HttpSession;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">public class LoginFilter implements Filter&#123;</span><br><span class="line"></span><br><span class="line">  public void init(FilterConfig filterConfig) throws ServletException &#123;</span><br><span class="line"></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  public void doFilter(ServletRequest request, ServletResponse response,</span><br><span class="line"></span><br><span class="line">      FilterChain chain) throws IOException, ServletException &#123;</span><br><span class="line"></span><br><span class="line">    //将request强转成htt...</span><br><span class="line"></span><br><span class="line">    HttpServletRequest req = (HttpServletRequest) request;</span><br><span class="line"></span><br><span class="line">    //获取session</span><br><span class="line"></span><br><span class="line">    HttpSession ss = req.getSession();</span><br><span class="line"></span><br><span class="line">    //从session中获取user</span><br><span class="line"></span><br><span class="line">    if(ss.getAttribute(&quot;user&quot;)==null)&#123;</span><br><span class="line"></span><br><span class="line">      System.err.println(&quot;你还没有登录&quot;);</span><br><span class="line"></span><br><span class="line">      req.getSession().setAttribute(&quot;msg&quot;, &quot;请你先登录&quot;);</span><br><span class="line"></span><br><span class="line">      //重定向到登录</span><br><span class="line"></span><br><span class="line">      HttpServletResponse resp = (HttpServletResponse) response;</span><br><span class="line"></span><br><span class="line">      resp.sendRedirect(req.getContextPath()+&quot;/index.jsp&quot;);[W2] </span><br><span class="line"></span><br><span class="line">    &#125;else&#123;</span><br><span class="line"></span><br><span class="line">      //放行</span><br><span class="line"></span><br><span class="line">      chain.doFilter(request, response);</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  public void destroy() &#123;</span><br><span class="line"></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>配置到web.xml中且对jsps/*进行过虑：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&lt;filter&gt;</span><br><span class="line">  &lt;filter-name&gt;login&lt;/filter-name&gt;</span><br><span class="line">  &lt;filter-class&gt;cn.itcast.filter.LoginFilter&lt;/filter-class&gt;</span><br><span class="line"> &lt;/filter&gt;</span><br><span class="line"></span><br><span class="line"> &lt;filter-mapping&gt;</span><br><span class="line">  &lt;filter-name&gt;login&lt;/filter-name&gt;</span><br><span class="line">  &lt;url-pattern&gt;/jsps/*&lt;/url-pattern&gt;</span><br><span class="line">  &lt;url-pattern&gt;/views/*&lt;/url-pattern&gt;</span><br><span class="line"> &lt;/filter-mapping&gt;</span><br></pre></td></tr></table></figure></p>
+<h3 id="实现自动登录"><a href="#实现自动登录" class="headerlink" title="实现自动登录"></a>实现自动登录</h3><p>自动登录，是为了帮助用户多次使用这个网页时，不用再次输入用户名和密码就可以登录。</p>
+<p>是指用户将用户的登录信息，人，保存到本地的文件中Cookie中。</p>
+<p> Name,value – 声明时 new Cookie(key,value);</p>
+<p> Path        - 默认值，即为当前保存cookie的这个serlvet所在的路径。</p>
+<p>如果Cookie在这样的路径：<a href="http://loclhost:8080/project/abc/AServlet，则Cookie的路径为" target="_blank" rel="noopener">http://loclhost:8080/project/abc/AServlet，则Cookie的路径为</a>: <a href="http://loclhost/project/abc" target="_blank" rel="noopener">http://loclhost/project/abc</a></p>
+<p> 则说明：</p>
+<p>所在在<a href="http://loclhost/project/abc目录下的servlet才可以读取这个cookie的值。" target="_blank" rel="noopener">http://loclhost/project/abc目录下的servlet才可以读取这个cookie的值。</a></p>
+<p>如果：</p>
+<p>保存Cookie类：<a href="http://loclhost:8080/project/a/b/AServlet，则Cookie的默认path为；http://loclhost/project/a/b" target="_blank" rel="noopener">http://loclhost:8080/project/a/b/AServlet，则Cookie的默认path为；http://loclhost/project/a/b</a></p>
+<p>第一步：开发一个登录页面</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">&lt;c:choose&gt;</span><br><span class="line"></span><br><span class="line">  &lt;c:when test=&quot;$&#123;empty sessionScope.name&#125;&quot;&gt;</span><br><span class="line"></span><br><span class="line">    &lt;form name=&quot;x&quot; method=&quot;post&quot; action=&quot;&lt;c:url value=&apos;/LoginServlet&apos;/&gt;&quot;&gt;</span><br><span class="line"></span><br><span class="line">      Name:&lt;input type=&quot;text&quot; name=&quot;name&quot;/&gt;&lt;br/&gt;</span><br><span class="line"></span><br><span class="line">      auto:</span><br><span class="line"></span><br><span class="line">      &lt;input type=&quot;radio&quot; name=&quot;auto&quot; value=&quot;-1&quot;&gt;不自动登录</span><br><span class="line"></span><br><span class="line">      &lt;br/&gt;</span><br><span class="line"></span><br><span class="line">      &lt;input type=&quot;radio&quot; name=&quot;auto&quot; value=&quot;1&quot;&gt;1天&lt;br/&gt;</span><br><span class="line"></span><br><span class="line">      &lt;input type=&quot;radio&quot; name=&quot;auto&quot; value=&quot;7&quot;&gt;1周&lt;br/&gt;</span><br><span class="line"></span><br><span class="line">      &lt;input type=&quot;submit&quot;/&gt;</span><br><span class="line"></span><br><span class="line">    &lt;/form&gt;</span><br><span class="line"></span><br><span class="line">  &lt;/c:when&gt;</span><br><span class="line"></span><br><span class="line">  &lt;c:otherwise&gt;</span><br><span class="line"></span><br><span class="line">    你已经登录了:$&#123;name&#125;&lt;br/&gt;</span><br><span class="line"></span><br><span class="line">    &lt;a href=&quot;&lt;c:url value=&apos;/LoginServlet&apos;/&gt;&quot;&gt;退出&lt;/a&gt;</span><br><span class="line"></span><br><span class="line">  &lt;/c:otherwise&gt;</span><br><span class="line"></span><br><span class="line">&lt;/c:choose&gt;</span><br></pre></td></tr></table></figure>
+<p>第二步：成功保存cookie</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">public void doPost(HttpServletRequest request, HttpServletResponse response)</span><br><span class="line"></span><br><span class="line">    throws ServletException, IOException &#123;</span><br><span class="line"></span><br><span class="line">  //接收用户姓名</span><br><span class="line"></span><br><span class="line">  String name = request.getParameter(&quot;name&quot;);</span><br><span class="line"></span><br><span class="line">  String auto = request.getParameter(&quot;auto&quot;);</span><br><span class="line"></span><br><span class="line">  //将用户信息放到session</span><br><span class="line"></span><br><span class="line">  request.getSession().setAttribute(&quot;name&quot;,name);</span><br><span class="line"></span><br><span class="line">  //判断auto是否是-1</span><br><span class="line"></span><br><span class="line">  if(!auto.equals(&quot;-1&quot;))&#123;</span><br><span class="line"></span><br><span class="line">    int day = Integer.parseInt(auto);//1|7</span><br><span class="line"></span><br><span class="line">    int seconds = 60*60*24*day;</span><br><span class="line"></span><br><span class="line">    //声明cookie</span><br><span class="line"></span><br><span class="line">    Cookie c = new Cookie(&quot;autoLogin&quot;,name);</span><br><span class="line"></span><br><span class="line">    c.setMaxAge(seconds);</span><br><span class="line"></span><br><span class="line">    c.setPath(request.getContextPath());</span><br><span class="line"></span><br><span class="line">    //保存cookie</span><br><span class="line"></span><br><span class="line">    response.addCookie(c);</span><br><span class="line"></span><br><span class="line">   </span><br><span class="line"></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>第三步：要求访问本网点中任何一个页面都应该实现自动登录</p>
+<p>写一个过虑器，对所有url=/*进行过虑。在doFilter中读取所有cookie。是否存在名称为autoLogin的名称cookie。</p>
+<p>永远都放行。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">public void doFilter(ServletRequest request, ServletResponse response,</span><br><span class="line"></span><br><span class="line">      FilterChain chain) throws IOException, ServletException &#123;</span><br><span class="line"></span><br><span class="line">    //在这儿读取cookie</span><br><span class="line"></span><br><span class="line">    HttpServletRequest req = (HttpServletRequest) request;</span><br><span class="line"></span><br><span class="line">    //获取所的有cookie</span><br><span class="line"></span><br><span class="line">    Cookie[] cs = req.getCookies();</span><br><span class="line"></span><br><span class="line">    if(cs!=null)&#123;</span><br><span class="line"></span><br><span class="line">      for(Cookie c:cs)&#123;</span><br><span class="line"></span><br><span class="line">       if(c.getName().equals(&quot;autoLogin&quot;))&#123;//如果存在自动登录的cookie</span><br><span class="line"></span><br><span class="line">         String value = c.getValue();//用户名称</span><br><span class="line"></span><br><span class="line">         //登录成功是指</span><br><span class="line"></span><br><span class="line">         req.getSession().setAttribute(&quot;name&quot;, value);</span><br><span class="line"></span><br><span class="line">         break;</span><br><span class="line"></span><br><span class="line">       &#125;</span><br><span class="line"></span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    //不管是否自动登录成</span><br><span class="line"></span><br><span class="line">    chain.doFilter(request, response);</span><br><span class="line"></span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+<p>第四涉：配置到web.xml中对所有url=/*<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">&lt;filter&gt;</span><br><span class="line"></span><br><span class="line">  &lt;filter-name&gt;auto&lt;/filter-name&gt;</span><br><span class="line"></span><br><span class="line">  &lt;filter-class&gt;cn.itcast.filter.AutoFilter&lt;/filter-class&gt;</span><br><span class="line"></span><br><span class="line"> &lt;/filter&gt;</span><br><span class="line"></span><br><span class="line"> &lt;filter-mapping&gt;</span><br><span class="line"></span><br><span class="line">  &lt;filter-name&gt;auto&lt;/filter-name&gt;</span><br><span class="line"></span><br><span class="line">  &lt;url-pattern&gt;/*&lt;/url-pattern&gt;</span><br><span class="line"></span><br><span class="line"> &lt;/filter-mapping&gt;</span><br></pre></td></tr></table></figure></p>
+<p> 第五步：开发退出<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">System.err.println(&quot;用户退出&quot;);</span><br><span class="line"></span><br><span class="line">    //删除整个session</span><br><span class="line"></span><br><span class="line">    request.getSession().invalidate();</span><br><span class="line"></span><br><span class="line">    Cookie c = new Cookie(&quot;autoLogin&quot;, &quot;ddd&quot;);</span><br><span class="line"></span><br><span class="line">    c.setMaxAge(0);</span><br><span class="line"></span><br><span class="line">    c.setPath(request.getContextPath());</span><br><span class="line"></span><br><span class="line">    response.addCookie(c);</span><br><span class="line"></span><br><span class="line">//   request.getSession().removeAttribute(&quot;name&quot;);</span><br><span class="line"></span><br><span class="line">    response.sendRedirect(request.getContextPath()+&quot;/index.jsp&quot;);</span><br></pre></td></tr></table></figure></p>
+<p>第六步：优化代码</p>
+<pre><code>由于用户在做手工登录时，也会进入AutoFiilter的doFilter方法，且读取所有Cookie遍历一次。而这次遍历对用户来说是多余。
+
+所以应该将LoginServet这个url在doFiler中不过过虑。
+
+且对退出也不能自动登录。
+</code></pre><p><a href="http://www.jb51.net/article/82538.htm" target="_blank" rel="noopener">原文链接</a></p>
+<p><a href="http://www.tuicool.com/articles/uyiiI3" target="_blank" rel="noopener">另一个登录注册系统</a></p>
+
+      
+    </div>
+    
+  </div>
+  
+    
+    <div class="copyright">
+        <p><span>本文标题:</span><a href="/2018/10/05/javaLogin/">java登录相关</a></p>
+        <p><span>文章作者:</span><a href="/" title="回到主页">月初</a></p>
+        <p><span>发布时间:</span>2018-10-05, 22:06:13</p>
+        <p><span>最后更新:</span>2017-05-17, 08:44:14</p>
+        <p>
+            <span>原始链接:</span><a class="post-url" href="/2018/10/05/javaLogin/" title="java登录相关">http://baiyuechu.github.io/2018/10/05/javaLogin/</a>
+            <span class="copy-path" data-clipboard-text="原文: http://baiyuechu.github.io/2018/10/05/javaLogin/　　作者: 月初" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <script> var clipboard = new Clipboard('.copy-path'); </script>
+        </p>
+        <p>
+            <span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" title="CC BY-NC-SA 4.0 International" target = "_blank">"署名-非商用-相同方式共享 4.0"</a> 转载请保留原文链接及作者。
+        </p>
+    </div>
+
+
+
+    <nav id="article-nav">
+        
+            <div id="article-nav-newer" class="article-nav-title">
+                <a href="/2018/10/05/javaMode/">
+                    java适配器模式，装饰器模式，代理模式比较
+                </a>
+            </div>
+        
+        
+            <div id="article-nav-older" class="article-nav-title">
+                <a href="/2018/10/05/javaIdentity/">
+                    java验证码
+                </a>
+            </div>
+        
+    </nav>
+
+  
+</article>
+
+    <div id="toc" class="toc-article">
+        <strong class="toc-title">文章目录</strong>
+        
+            <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#验证用户是否已经登录"><span class="toc-number">1.</span> <span class="toc-text">验证用户是否已经登录</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#实现自动登录"><span class="toc-number">2.</span> <span class="toc-text">实现自动登录</span></a></li></ol>
+        
+    </div>
+    <style>
+        .left-col .switch-btn,
+        .left-col .switch-area {
+            display: none;
+        }
+        .toc-level-3 i,
+        .toc-level-3 ol {
+            display: none !important;
+        }
+    </style>
+
+    <input type="button" id="tocButton" value="隐藏目录"  title="点击按钮隐藏或者显示文章目录">
+
+    <script>
+        yiliaConfig.toc = ["隐藏目录", "显示目录", !!"false"];
+    </script>
+
+
+
+    
+<div class="share">
+    
+        <div class="bdsharebuttonbox">
+            <a href="#" class="fa fa-twitter bds_twi" data-cmd="twi" title="分享到推特"></a>
+            <a href="#" class="fa fa-weibo bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+            <a href="#" class="fa fa-qq bds_sqq" data-cmd="sqq" title="分享给 QQ 好友"></a>
+            <a href="#" class="fa fa-files-o bds_copy" data-cmd="copy" title="复制网址"></a>
+            <a href="#" class="fa fa fa-envelope-o bds_mail" data-cmd="mail" title="通过邮件分享"></a>
+            <a href="#" class="fa fa-weixin bds_weixin" data-cmd="weixin" title="生成文章二维码"></a>
+            <a href="#" class="fa fa-share-alt bds_more" data-cmd="more"></i></a>
+        </div>
+        <script>
+            window._bd_share_config={
+                "common":{"bdSnsKey":{},"bdText":"java登录相关　| 月初　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+        </script>
+    
+
+    
+</div>
+
+
+
+
+
+
+
+    
+
+
+
+
+    <div class="scroll" id="post-nav-button">
+        
+            <a href="/2018/10/05/javaMode/" title="上一篇: java适配器模式，装饰器模式，代理模式比较">
+                <i class="fa fa-angle-left"></i>
+            </a>
+        
+
+        <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+
+        
+            <a href="/2018/10/05/javaIdentity/" title="下一篇: java验证码">
+                <i class="fa fa-angle-right"></i>
+            </a>
+        
+    </div>
+
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2018/10/14/狼的孩子雨和雪/">狼的孩子雨和雪</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/10/05/刺客伍六七/">刺客伍六七</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/10/05/time Manage/">时间管理</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/10/05/study/">学习方法</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/10/05/oracle Stored Procedure/">oracle存储过程</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/10/05/oracle Paging/">oracle分页</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/10/05/oracle Index/">oracle索引</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/10/05/linuxMysql/">linux安装mysql5.6.39</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/10/05/javaSingleton/">java单例模式</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/10/05/javaMode/">java适配器模式，装饰器模式，代理模式比较</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/10/05/javaLogin/">java登录相关</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/10/05/javaIdentity/">java验证码</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/10/05/bulidSummary/">建站小结</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/10/05/birthday/">建站第一天纪念</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/10/05/2/">驱动模式 ModelDriven</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/10/05/1/">声明式事务管理</a></li></ul>
+
+
+
+
+    <script>
+        
+    </script>
+</div>
+      <footer id="footer">
+    <div class="outer">
+        <div id="footer-info">
+            <div class="footer-left">
+                <i class="fa fa-copyright"></i> 
+                2016-2018 月初
+            </div>
+            <div class="footer-right">
+                <a href="http://hexo.io/" target="_blank" title="快速、简洁且高效的博客框架">Hexo</a>  Theme <a href="https://github.com/MOxFIVE/hexo-theme-yelee" target="_blank" title="简而不减 Hexo 双栏博客主题  v3.5">Yelee</a> by MOxFIVE <i class="fa fa-heart animated infinite pulse"></i>
+            </div>
+        </div>
+        
+            <div class="visit">
+                
+                    <span id="busuanzi_container_site_pv" style='display:none'>
+                        <span id="site-visit" title="本站到访数"><i class="fa fa-user" aria-hidden="true"></i><span id="busuanzi_value_site_uv"></span>
+                        </span>
+                    </span>
+                
+                
+                    <span>| </span>
+                
+                
+                    <span id="busuanzi_container_page_pv" style='display:none'>
+                        <span id="page-visit"  title="本页阅读量"><i class="fa fa-eye animated infinite pulse" aria-hidden="true"></i><span id="busuanzi_value_page_pv"></span>
+                        </span>
+                    </span>
+                
+            </div>
+        
+    </div>
+</footer>
+    </div>
+    
+<script data-main="/js/main.js" src="//cdn.bootcss.com/require.js/2.2.0/require.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            var iPad = window.navigator.userAgent.indexOf('iPad');
+            if (iPad > -1 || $(".left-col").css("display") === "none") {
+                var bgColorList = ["#9db3f4", "#414141", "#e5a859", "#f5dfc6", "#c084a0", "#847e72", "#cd8390", "#996731"];
+                var bgColor = Math.ceil(Math.random() * (bgColorList.length - 1));
+                $("body").css({"background-color": bgColorList[bgColor], "background-size": "cover"});
+            }
+            else {
+                var backgroundnum = 5;
+                var backgroundimg = "url(/background/bg-x.jpg)".replace(/x/gi, Math.ceil(Math.random() * backgroundnum));
+                $("body").css({"background": backgroundimg, "background-attachment": "fixed", "background-size": "cover"});
+            }
+        })
+    </script>
+
+
+
+
+
+<div class="scroll" id="scroll">
+    <a href="#" title="返回顶部"><i class="fa fa-arrow-up"></i></a>
+    <a href="#comments" onclick="load$hide();" title="查看评论"><i class="fa fa-comments-o"></i></a>
+    <a href="#footer" title="转到底部"><i class="fa fa-arrow-down"></i></a>
+</div>
+<script>
+    // Open in New Window
+    
+        var oOpenInNew = {
+            
+            
+            
+            
+            
+            
+             archives: ".archive-article-title", 
+             miniArchives: "a.post-list-link", 
+            
+             friends: "#js-friends a", 
+             socail: ".social a" 
+        }
+        for (var x in oOpenInNew) {
+            $(oOpenInNew[x]).attr("target", "_blank");
+        }
+    
+</script>
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+  </div>
+</body>
+</html>

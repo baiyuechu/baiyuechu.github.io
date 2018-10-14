@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+
+    <!--[if lt IE 9]>
+        <style>body {display: none; background: none !important} </style>
+        <meta http-equiv="Refresh" Content="0; url=//outdatedbrowser.com/" />
+    <![endif]-->
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="format-detection" content="telephone=no" />
+<meta name="author" content="月初" />
+
+
+
+<meta name="description" content="设计模式，其实是一种解决方法，Java作为一种面向对象的语言，对于所有的设计模式在实现上，总是少不了对接口的实现，对抽象类的继承，有时候似乎是为了去实现接口而去写接口，所以在这三种模式的说明代码中，我们都定义了接口这些东西，所以才有了现在的混淆。">
+<meta name="keywords" content="java,mode">
+<meta property="og:type" content="article">
+<meta property="og:title" content="java适配器模式，装饰器模式，代理模式比较">
+<meta property="og:url" content="http://baiyuechu.github.io/2018/10/05/javaMode/index.html">
+<meta property="og:site_name" content="月初">
+<meta property="og:description" content="设计模式，其实是一种解决方法，Java作为一种面向对象的语言，对于所有的设计模式在实现上，总是少不了对接口的实现，对抽象类的继承，有时候似乎是为了去实现接口而去写接口，所以在这三种模式的说明代码中，我们都定义了接口这些东西，所以才有了现在的混淆。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-05-11T14:13:26.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="java适配器模式，装饰器模式，代理模式比较">
+<meta name="twitter:description" content="设计模式，其实是一种解决方法，Java作为一种面向对象的语言，对于所有的设计模式在实现上，总是少不了对接口的实现，对抽象类的继承，有时候似乎是为了去实现接口而去写接口，所以在这三种模式的说明代码中，我们都定义了接口这些东西，所以才有了现在的混淆。">
+
+<link rel="apple-touch-icon" href= "/apple-touch-icon.png">
+
+
+    <link rel="alternate" href="/atom.xml" title="月初" type="application/atom+xml">
+
+
+
+    <link rel="shortcut icon" href="/img/yuechu.png">
+
+
+
+    <link href="//cdn.bootcss.com/animate.css/3.5.1/animate.min.css" rel="stylesheet">
+
+
+
+    <link href="//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.css" rel="stylesheet">
+
+
+
+    <script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
+    <link href="//cdn.bootcss.com/pace/1.0.2/themes/blue/pace-theme-minimal.css" rel="stylesheet">
+
+
+<link rel="stylesheet" href="/css/style.css">
+
+
+
+<link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+
+
+<title>java适配器模式，装饰器模式，代理模式比较 | 月初</title>
+
+<script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+<script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+
+<script>
+    var yiliaConfig = {
+        fancybox: true,
+        animate: true,
+        isHome: false,
+        isPost: true,
+        isArchive: false,
+        isTag: false,
+        isCategory: false,
+        fancybox_js: "//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.js",
+        scrollreveal: "//cdn.bootcss.com/scrollReveal.js/3.1.4/scrollreveal.min.js",
+        search: undefined
+    }
+</script>
+
+
+    <script> yiliaConfig.jquery_ui = [false]; </script>
+
+
+
+    <script> yiliaConfig.rootUrl = "\/";</script>
+
+
+
+
+
+
+</head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+    <header id="header" class="inner">
+        <a href="/" class="profilepic">
+            <img src="/img/susu3_.png" class="animated zoomIn">
+        </a>
+        <hgroup>
+          <h1 class="header-author"><a href="/">月初</a></h1>
+        </hgroup>
+
+        
+        <p class="header-subtitle">别打我，我知道我很蠢。。。  (联系qq1451595214,注明来意)</p>
+        
+
+        
+
+
+        
+            <div id="switch-btn" class="switch-btn">
+                <div class="icon">
+                    <div class="icon-ctn">
+                        <div class="icon-wrap icon-house" data-idx="0">
+                            <div class="birdhouse"></div>
+                            <div class="birdhouse_holes"></div>
+                        </div>
+                        <div class="icon-wrap icon-ribbon hide" data-idx="1">
+                            <div class="ribbon"></div>
+                        </div>
+                        
+                        <div class="icon-wrap icon-link hide" data-idx="2">
+                            <div class="loopback_l"></div>
+                            <div class="loopback_r"></div>
+                        </div>
+                        
+                        
+                        <div class="icon-wrap icon-me hide" data-idx="3">
+                            <div class="user"></div>
+                            <div class="shoulder"></div>
+                        </div>
+                        
+                    </div>
+                    
+                </div>
+                <div class="tips-box hide">
+                    <div class="tips-arrow"></div>
+                    <ul class="tips-inner">
+                        <li>菜单</li>
+                        <li>标签</li>
+                        
+                        <li>友情链接</li>
+                        
+                        
+                        <li>关于我</li>
+                        
+                    </ul>
+                </div>
+            </div>
+        
+
+        <div id="switch-area" class="switch-area">
+            <div class="switch-wrap">
+                <section class="switch-part switch-part1">
+                    <nav class="header-menu">
+                        <ul>
+                        
+                            <li><a href="/">主页</a></li>
+                        
+                            <li><a href="/archives/">所有文章</a></li>
+                        
+                            <li><a href="/tags/">标签云</a></li>
+                        
+                            <li><a href="/about/">关于我</a></li>
+                        
+                        </ul>
+                    </nav>
+                    <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa Email" href="/752924568@qq.com" title="Email"></a>
+                            
+                                <a class="fa GitHub" href="#" title="GitHub"></a>
+                            
+                                <a class="fa RSS" href="/atom.xml" title="RSS"></a>
+                            
+                                <a class="fa 网易云音乐" href="//music.163.com/style/swf/widget.swf?sid=586029&type=2&auto=1&width=278&height=32" title="网易云音乐"></a>
+                            
+                        </ul>
+                    </nav>
+                </section>
+                
+                
+                <section class="switch-part switch-part2">
+                    <div class="widget tagcloud" id="js-tagcloud">
+                        <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Live/">Live</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Stored-Procedure/">Stored Procedure</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Transaction/">Transaction</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/experience/">experience</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/identity/">identity</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/index/">index</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/live/">live</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/login/">login</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mode/">mode</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/">mysql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/oracle/">oracle</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/paging/">paging</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/self-management/">self management</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/singleton/">singleton</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/struts/">struts</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/study/">study</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/动漫/">动漫</a></li></ul>
+                    </div>
+                </section>
+                
+                
+                
+                <section class="switch-part switch-part3">
+                    <div id="js-friends">
+                    
+                      <a class="main-nav-link switch-friends-link" href="https://hexo.io">Hexo</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="https://pages.github.com/">GitHub</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="http://moxfive.xyz/">MOxFIVE</a>
+                    
+                    </div>
+                </section>
+                
+
+                
+                
+                <section class="switch-part switch-part4">
+                
+                    <div id="js-aboutme">专注于ios</div>
+                </section>
+                
+            </div>
+        </div>
+    </header>                
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+      <div class="overlay">
+          <div class="slider-trigger"></div>
+          <h1 class="header-author js-mobile-header hide"><a href="/" title="回到主页">月初</a></h1>
+      </div>
+    <div class="intrude-less">
+        <header id="header" class="inner">
+            <a href="/" class="profilepic">
+                <img src="/img/susu3_.png" class="animated zoomIn">
+            </a>
+            <hgroup>
+              <h1 class="header-author"><a href="/" title="回到主页">月初</a></h1>
+            </hgroup>
+            
+            <p class="header-subtitle">别打我，我知道我很蠢。。。  (联系qq1451595214,注明来意)</p>
+            
+            <nav class="header-menu">
+                <ul>
+                
+                    <li><a href="/">主页</a></li>
+                
+                    <li><a href="/archives/">所有文章</a></li>
+                
+                    <li><a href="/tags/">标签云</a></li>
+                
+                    <li><a href="/about/">关于我</a></li>
+                
+                <div class="clearfix"></div>
+                </ul>
+            </nav>
+            <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa Email" target="_blank" href="/752924568@qq.com" title="Email"></a>
+                            
+                                <a class="fa GitHub" target="_blank" href="#" title="GitHub"></a>
+                            
+                                <a class="fa RSS" target="_blank" href="/atom.xml" title="RSS"></a>
+                            
+                                <a class="fa 网易云音乐" target="_blank" href="//music.163.com/style/swf/widget.swf?sid=586029&type=2&auto=1&width=278&height=32" title="网易云音乐"></a>
+                            
+                        </ul>
+            </nav>
+        </header>                
+    </div>
+    <link class="menu-list" tags="标签" friends="友情链接" about="关于我"/>
+</nav>
+      <div class="body-wrap"><article id="post-javaMode" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2018/10/05/javaMode/" class="article-date">
+      <time datetime="2018-10-05T14:06:13.347Z" itemprop="datePublished">2018-10-05</time>
+</a>
+
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      java适配器模式，装饰器模式，代理模式比较
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+    <div class="article-category tagcloud">
+    <a class="article-category-link" href="/categories/java/">java</a>
+    </div>
+
+
+        
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/">java</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mode/">mode</a></li></ul>
+    </div>
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <p>设计模式，其实是一种解决方法，Java作为一种面向对象的语言，对于所有的设计模式在实现上，总是少不了对接口的实现，对抽象类的继承，有时候似乎是为了去实现接口而去写接口，所以在这三种模式的说明代码中，我们都定义了接口这些东西，所以才有了现在的混淆。<a id="more"></a></p>
+<p>先不厌其烦的介绍下这三种的设计模式的概念吧。</p>
+<p>适配器模式，一个适配允许通常因为接口不兼容而不能在一起工作的类工作在一起，做法是将类自己的接口包裹在一个已存在的类中。</p>
+<p>装饰器模式，原有的不能满足现有的需求，对原有的进行增强。</p>
+<p>代理模式，同一个类而去调用另一个类的方法，不对这个方法进行直接操作。</p>
+<p>适配器的特点在于兼容，从代码上的特点来说，适配类与原有的类具有相同的接口，并且持有新的目标对象。</p>
+<p>就如同一个三孔转2孔的适配器一样，他有三孔的插头，可以插到三孔插座里，又有两孔的插座可以被2孔插头插入。</p>
+<p>适配器模式是在于对原有3孔的改造。</p>
+<p>在使用适配器模式的时候，我们必须同时持有原对象，适配对象，目标对象。。。。</p>
+<p>装饰器模式特点在于增强，他的特点是被装饰类和所有的装饰类必须实现同一个接口，而且必须持有被装饰的对象，可以无限装饰。</p>
+<p>代理模式的特点在于隔离，隔离调用类和被调用类的关系，通过一个代理类去调用。</p>
+<p>总的来说就是如下三句话：</p>
+<p> 1 适配器模式是将一个类(a)通过某种方式转换成另一个类(b).<br> 2 装饰模式是在一个原有类(a)的基础之上增加了某些新的功能变成另一个类(b).<br> 3 代理模式是将一个类(a)转换成具体的操作类(b).</p>
+<p>又是罗里吧嗦一大段话，然后我们开心的来到了举例时间，这次举的是工作中实际的例子。</p>
+<p>先简单介绍一下，公司有一个ORDER系统，专门用于提供订单管理的接口，提供给O2O商城，WAP商城，手机类APP，微信等客户端调用。</p>
+<p>ORDER系统在上线之时，已经包含了非常完整的数据操作。</p>
+<p>现手机类APP需要升级，老的接口可能不能满足需求，如原O2O订单提货延长有效期接口需要提供截至时间和订单号，新APP可能不提供截至时间，只需要 提供订单号即可延长时间。</p>
+<p>而老的接口又不能修改，因为老的order接口是针对所有平台的，那么必须将新接口要求与原接口进行适配。。。</p>
+<p>解决方案如下：新增AppAdepter类，用来适配老的接口，同时开发给新的接口。。。。</p>
+<p>先给出原接口和实现类</p>
+<p>原接口：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">/** </span><br><span class="line"> * 原接口，需要传入orderId，时间 </span><br><span class="line"> * </span><br><span class="line"> */  </span><br><span class="line">public interface SourceOrderApi &#123;  </span><br><span class="line">    public void updateDate(String orderId,String date,String client);  </span><br><span class="line">&#125;  </span><br><span class="line"></span><br><span class="line">实现类：</span><br><span class="line"></span><br><span class="line">public class SourceOrderApiImpl implements SourceOrderApi&#123;  </span><br><span class="line">  </span><br><span class="line">  </span><br><span class="line">    @Override  </span><br><span class="line">    public void updateDate(String orderId, String date, String client) &#123;  </span><br><span class="line">        System.out.println(client+&quot;已将订单&quot;+orderId+&quot;的有效期延长至&quot;+date);         </span><br><span class="line">    &#125;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>在这套代码中，对于客户端来说需要传入orderId  和  有效期date 和客户端名字才能延长。。。</p>
+<p>Main方法：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">public class Test &#123;  </span><br><span class="line">  </span><br><span class="line">    public static void main(String[] args) &#123;  </span><br><span class="line">        SourceOrderApi sourceOrderApi = new SourceOrderApiImpl();  </span><br><span class="line">        sourceOrderApi.updateDate(&quot;123456&quot;, &quot;2014-10-15&quot;, &quot;user&quot;);  </span><br><span class="line">    &#125;  </span><br><span class="line">  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>运行结果：</p>
+<p>而对于新的接口，客户端则不必去传入date 参数<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">public interface AppOrderApi &#123;  </span><br><span class="line">    //只需要传入订单Id即可  </span><br><span class="line">    public void updateDate(String orderId,String client);  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>新的实现类：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">public class AppOrderApiImpl implements AppOrderApi&#123;  </span><br><span class="line">      </span><br><span class="line">    SourceOrderApi sourceOrderApi;  </span><br><span class="line">      </span><br><span class="line">    public AppOrderApiImpl()&#123;  </span><br><span class="line">        sourceOrderApi = new SourceOrderApiImpl();  </span><br><span class="line">    &#125;  </span><br><span class="line">  </span><br><span class="line">    @Override  </span><br><span class="line">    public void updateDate(String orderId,String client) &#123;  </span><br><span class="line">        //这里适配的方式随意，但是保证是要完全兼容原有的，就是保证调用原有的接口  </span><br><span class="line">        sourceOrderApi.updateDate(orderId, &quot;9999-12-31&quot;,client);  </span><br><span class="line">    &#125;  </span><br><span class="line">  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>main方法：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">public class Test &#123;  </span><br><span class="line">  </span><br><span class="line">    public static void main(String[] args) &#123;  </span><br><span class="line">        AppOrderApi appOrderApi = new AppOrderApiImpl();  </span><br><span class="line">        appOrderApi.updateDate(&quot;123456&quot;, &quot;user&quot;);  </span><br><span class="line">    &#125;  </span><br><span class="line">  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>在这套代码中，新的实现类持有了老接口的对象，就是把这个对象new 出来。。。<br>然后在新的方法里，进行适配操作。</p>
+<p>而这里所谓的适配就是兼容老接口和兼容新接口。</p>
+<p>兼容老接口非常简单，就是直接调用老的方法即可。</p>
+<p>而兼容新接口就是你所要去做的业务逻辑。。。</p>
+<p>比如我这里做了比较简单的操作，app类的统一传入“9999-12-31”，这些都是根据具体的项目需求去实现你的业务代码。</p>
+<p>看到这，很多人会觉得 这样的代码是不是很常见。。。。</p>
+<p>我自己都特意去翻了一下我之前的代码，很多类似的写法。。。</p>
+<p>其实设计模式很多时候都融入到我们的代码中，只是我们没有去理解这种模式，所以就算你自己写出来了，都不知道这是一种适配器模式。。。</p>
+<p>设计模式是一种思想，他没有固定的实现代码，我大量查阅了很多大神的的适配器模式解释，大家都不约而同的提到了类的适配和对象的适配，代码中有实现继承这样的写法。当然了，这些大神的写法都是比较标准的。。。</p>
+<p>但是仔细再回看下GOF的适配器模式解释。</p>
+<p>只需要将原接口转化为客户希望的另一个接口，就是适配器模式！</p>
+<p>转化无非就是1.继承原类或者实现原接口  2.持有原接口的对象 </p>
+<p>再实现目标接口。。。。</p>
+<p>那么第一种就是类的适配，第二种就是对象的适配！仅此而已。。。。</p>
+<p>那么再回头来说代理模式，在代码上，和适配器模式有着相似的地方！</p>
+<p>再比如，现在我们公司的系统又要进行升级，我们原先的接口没有加入安全机制，导致了任何人都可以随意调用这个接口，现在公司需要对这个接口进行改造，只其只能被admin这个客户端调用，其他用户一律要输入账号密码才能调用</p>
+<p>那么上面原接口和类不需要改动，我们只需要新增代理器即可。。。</p>
+<p>这里就会显出代理模式和适配器模式最大的区别，代理模式是与原对象实现同一个接口，而适配器类则是匹配新接口，说白了，实现一个新的接口。</p>
+<p>代理类：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">public class ProxySourceOrderApiImpl implements SourceOrderApi &#123;  </span><br><span class="line">    SourceOrderApi sourceOrderApiImpl;  </span><br><span class="line">    public ProxySourceOrderApiImpl()&#123;  </span><br><span class="line">        sourceOrderApiImpl = new SourceOrderApiImpl();  </span><br><span class="line">    &#125;  </span><br><span class="line">  </span><br><span class="line">    @Override  </span><br><span class="line">    public void updateDate(String orderId, String date, String client) &#123;  </span><br><span class="line">        //进行判断，如果是admin则更新否则让其输入账号密码  </span><br><span class="line">        if(&quot;admin&quot;.equals(client))&#123;  </span><br><span class="line">            sourceOrderApiImpl.updateDate(orderId, date, client);  </span><br><span class="line">        &#125;else&#123;  </span><br><span class="line">            System.out.println(&quot;账号不是admin，没有查询权限，请输入以admin操作&quot;);  </span><br><span class="line">        &#125;  </span><br><span class="line">    &#125;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>main方法：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">public class Test &#123;  </span><br><span class="line">  </span><br><span class="line">    public static void main(String[] args) &#123;  </span><br><span class="line">        SourceOrderApi proxySourceOrderApiImpl = new ProxySourceOrderApiImpl();  </span><br><span class="line">        proxySourceOrderApiImpl.updateDate(&quot;123456&quot;, &quot;2014-10-15&quot;, &quot;user&quot;);  </span><br><span class="line">        proxySourceOrderApiImpl.updateDate(&quot;123456&quot;, &quot;2014-10-15&quot;, &quot;admin&quot;);  </span><br><span class="line">    &#125;  </span><br><span class="line">  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>运行结果：</p>
+<p>这里的代理类必须要持要实现原接口和持有原接口的对象，才能称之为代理类。</p>
+<p>这样，我们不需要修改原先的实现类，用一个代理类来进行过滤。有些人可能有这样的疑惑，为什么不直接在原实现类中修改，记住JAVA设计模式的基本原则，对内关闭修改。</p>
+<p>假如你并没有对方的类，别人只是提供给你这样一个可以操作的JAR包你如何去做？把JAR包反编译，再修改？又假如某些地方可以直接调用原有接口，你如果修改原有的实现类，岂不是对其他的地方也造成了影响？不能修改原有代码这是基本原则。</p>
+<p>最后，就是装饰器模式，装饰器模式与相对于上面2种模式更好理解，差别也最大。</p>
+<p>假如说，现在这个延长订单，不光可以延长订单提货有效期，可以延长订单的退货有效期。</p>
+<p>这就是一个典型的装饰器，你需要做的是丰富原接口的功能，并且不改动原先的接口。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">public class NewSourceOrderApiImpl implements SourceOrderApi &#123;  </span><br><span class="line">  </span><br><span class="line">    SourceOrderApi sourceOrderApi;  </span><br><span class="line">    public NewSourceOrderApiImpl(SourceOrderApi sourceOrderApi)&#123;  </span><br><span class="line">        this.sourceOrderApi = sourceOrderApi;  </span><br><span class="line">    &#125;  </span><br><span class="line">    @Override  </span><br><span class="line">    public void updateDate(String orderId, String date, String client) &#123;  </span><br><span class="line">        sourceOrderApi.updateDate(orderId, date, client);  </span><br><span class="line">        System.out.println(client+&quot;已将订单&quot;+orderId+&quot;的退款期延长至&quot;+date);         </span><br><span class="line">          </span><br><span class="line">    &#125;  </span><br><span class="line">  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>main方法：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">public class Test &#123;  </span><br><span class="line">  </span><br><span class="line">    public static void main(String[] args) &#123;  </span><br><span class="line">        SourceOrderApi sourceOrderApi = new NewSourceOrderApiImpl(new SourceOrderApiImpl());  </span><br><span class="line">        sourceOrderApi.updateDate(&quot;123456&quot;, &quot;2014-10-15&quot;, &quot;user&quot;);  </span><br><span class="line">    &#125;  </span><br><span class="line">  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>在装饰器模式中，必须要有被装饰的类和装饰的类。。在这套代码中，原先SourceOrderApi的对象就是被装饰的类，而新建NewSourceOrderApiImpl 就是装饰类，装饰类必须把被装饰的对象当作参数传入。</p>
+<p>这就是和代理模式的代码不同之处，代理模式一定是自身持有这个对象，不需要从外部传入。而装饰模式的一定是从外部传入，并且可以没有顺序，按照代码的实际需求随意挑换顺序，就如你吃火锅先放白菜还是先放丸子都可以。</p>
+<p>再从使用上来看，代理模式注重的是隔离限制，让外部不能访问你实际的调用对象，比如权限控制，装饰模式注重的是功能的拓展，在同一个方法下实现更多的功能。</p>
+<p><a href="http://blog.csdn.net/lulei9876/article/details/39994825" target="_blank" rel="noopener">原文链接</a></p>
+
+      
+    </div>
+    
+  </div>
+  
+    
+    <div class="copyright">
+        <p><span>本文标题:</span><a href="/2018/10/05/javaMode/">java适配器模式，装饰器模式，代理模式比较</a></p>
+        <p><span>文章作者:</span><a href="/" title="回到主页">月初</a></p>
+        <p><span>发布时间:</span>2018-10-05, 22:06:13</p>
+        <p><span>最后更新:</span>2017-05-11, 22:13:26</p>
+        <p>
+            <span>原始链接:</span><a class="post-url" href="/2018/10/05/javaMode/" title="java适配器模式，装饰器模式，代理模式比较">http://baiyuechu.github.io/2018/10/05/javaMode/</a>
+            <span class="copy-path" data-clipboard-text="原文: http://baiyuechu.github.io/2018/10/05/javaMode/　　作者: 月初" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <script> var clipboard = new Clipboard('.copy-path'); </script>
+        </p>
+        <p>
+            <span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" title="CC BY-NC-SA 4.0 International" target = "_blank">"署名-非商用-相同方式共享 4.0"</a> 转载请保留原文链接及作者。
+        </p>
+    </div>
+
+
+
+    <nav id="article-nav">
+        
+            <div id="article-nav-newer" class="article-nav-title">
+                <a href="/2018/10/05/javaSingleton/">
+                    java单例模式
+                </a>
+            </div>
+        
+        
+            <div id="article-nav-older" class="article-nav-title">
+                <a href="/2018/10/05/javaLogin/">
+                    java登录相关
+                </a>
+            </div>
+        
+    </nav>
+
+  
+</article>
+
+    <div id="toc" class="toc-article">
+        <strong class="toc-title">文章目录</strong>
+        
+            
+        
+    </div>
+    <style>
+        .left-col .switch-btn,
+        .left-col .switch-area {
+            display: none;
+        }
+        .toc-level-3 i,
+        .toc-level-3 ol {
+            display: none !important;
+        }
+    </style>
+
+    <input type="button" id="tocButton" value="隐藏目录"  title="点击按钮隐藏或者显示文章目录">
+
+    <script>
+        yiliaConfig.toc = ["隐藏目录", "显示目录", !!"false"];
+    </script>
+
+
+
+    
+<div class="share">
+    
+        <div class="bdsharebuttonbox">
+            <a href="#" class="fa fa-twitter bds_twi" data-cmd="twi" title="分享到推特"></a>
+            <a href="#" class="fa fa-weibo bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+            <a href="#" class="fa fa-qq bds_sqq" data-cmd="sqq" title="分享给 QQ 好友"></a>
+            <a href="#" class="fa fa-files-o bds_copy" data-cmd="copy" title="复制网址"></a>
+            <a href="#" class="fa fa fa-envelope-o bds_mail" data-cmd="mail" title="通过邮件分享"></a>
+            <a href="#" class="fa fa-weixin bds_weixin" data-cmd="weixin" title="生成文章二维码"></a>
+            <a href="#" class="fa fa-share-alt bds_more" data-cmd="more"></i></a>
+        </div>
+        <script>
+            window._bd_share_config={
+                "common":{"bdSnsKey":{},"bdText":"java适配器模式，装饰器模式，代理模式比较　| 月初　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+        </script>
+    
+
+    
+</div>
+
+
+
+
+
+
+
+    
+
+
+
+
+    <div class="scroll" id="post-nav-button">
+        
+            <a href="/2018/10/05/javaSingleton/" title="上一篇: java单例模式">
+                <i class="fa fa-angle-left"></i>
+            </a>
+        
+
+        <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+
+        
+            <a href="/2018/10/05/javaLogin/" title="下一篇: java登录相关">
+                <i class="fa fa-angle-right"></i>
+            </a>
+        
+    </div>
+
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2018/10/14/狼的孩子雨和雪/">狼的孩子雨和雪</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/10/05/刺客伍六七/">刺客伍六七</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/10/05/time Manage/">时间管理</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/10/05/study/">学习方法</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/10/05/oracle Stored Procedure/">oracle存储过程</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/10/05/oracle Paging/">oracle分页</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/10/05/oracle Index/">oracle索引</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/10/05/linuxMysql/">linux安装mysql5.6.39</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/10/05/javaSingleton/">java单例模式</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/10/05/javaMode/">java适配器模式，装饰器模式，代理模式比较</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/10/05/javaLogin/">java登录相关</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/10/05/javaIdentity/">java验证码</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/10/05/bulidSummary/">建站小结</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/10/05/birthday/">建站第一天纪念</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/10/05/2/">驱动模式 ModelDriven</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/10/05/1/">声明式事务管理</a></li></ul>
+
+
+
+
+    <script>
+        
+    </script>
+</div>
+      <footer id="footer">
+    <div class="outer">
+        <div id="footer-info">
+            <div class="footer-left">
+                <i class="fa fa-copyright"></i> 
+                2016-2018 月初
+            </div>
+            <div class="footer-right">
+                <a href="http://hexo.io/" target="_blank" title="快速、简洁且高效的博客框架">Hexo</a>  Theme <a href="https://github.com/MOxFIVE/hexo-theme-yelee" target="_blank" title="简而不减 Hexo 双栏博客主题  v3.5">Yelee</a> by MOxFIVE <i class="fa fa-heart animated infinite pulse"></i>
+            </div>
+        </div>
+        
+            <div class="visit">
+                
+                    <span id="busuanzi_container_site_pv" style='display:none'>
+                        <span id="site-visit" title="本站到访数"><i class="fa fa-user" aria-hidden="true"></i><span id="busuanzi_value_site_uv"></span>
+                        </span>
+                    </span>
+                
+                
+                    <span>| </span>
+                
+                
+                    <span id="busuanzi_container_page_pv" style='display:none'>
+                        <span id="page-visit"  title="本页阅读量"><i class="fa fa-eye animated infinite pulse" aria-hidden="true"></i><span id="busuanzi_value_page_pv"></span>
+                        </span>
+                    </span>
+                
+            </div>
+        
+    </div>
+</footer>
+    </div>
+    
+<script data-main="/js/main.js" src="//cdn.bootcss.com/require.js/2.2.0/require.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            var iPad = window.navigator.userAgent.indexOf('iPad');
+            if (iPad > -1 || $(".left-col").css("display") === "none") {
+                var bgColorList = ["#9db3f4", "#414141", "#e5a859", "#f5dfc6", "#c084a0", "#847e72", "#cd8390", "#996731"];
+                var bgColor = Math.ceil(Math.random() * (bgColorList.length - 1));
+                $("body").css({"background-color": bgColorList[bgColor], "background-size": "cover"});
+            }
+            else {
+                var backgroundnum = 5;
+                var backgroundimg = "url(/background/bg-x.jpg)".replace(/x/gi, Math.ceil(Math.random() * backgroundnum));
+                $("body").css({"background": backgroundimg, "background-attachment": "fixed", "background-size": "cover"});
+            }
+        })
+    </script>
+
+
+
+
+
+<div class="scroll" id="scroll">
+    <a href="#" title="返回顶部"><i class="fa fa-arrow-up"></i></a>
+    <a href="#comments" onclick="load$hide();" title="查看评论"><i class="fa fa-comments-o"></i></a>
+    <a href="#footer" title="转到底部"><i class="fa fa-arrow-down"></i></a>
+</div>
+<script>
+    // Open in New Window
+    
+        var oOpenInNew = {
+            
+            
+            
+            
+            
+            
+             archives: ".archive-article-title", 
+             miniArchives: "a.post-list-link", 
+            
+             friends: "#js-friends a", 
+             socail: ".social a" 
+        }
+        for (var x in oOpenInNew) {
+            $(oOpenInNew[x]).attr("target", "_blank");
+        }
+    
+</script>
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+  </div>
+</body>
+</html>
